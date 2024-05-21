@@ -30,8 +30,6 @@ const getUserWithEmail = function (email) {
 
 };
 
-exports.getUserWithEmail = getUserWithEmail;
-
 /**
  * Get a single user from the database given their id.
  * @param {string} id The id of the user.
@@ -47,7 +45,6 @@ const getUserWithId = function (id) {
     console.error('query error', err.stack)
   })
 };
-exports.getUserWithId = getUserWithId;
 
 /**
  * Add a new user to the database.
@@ -67,8 +64,6 @@ const addUser = function (user) {
   })
 };
 
-exports.addUser = addUser;
-
 /// Reservations
 
 /**
@@ -76,8 +71,21 @@ exports.addUser = addUser;
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-const getAllReservations = function (guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+const getAllReservations = function(guest_id, limit = 20) {
+  return pool.query(`
+  SELECT reservations.*, properties.*, AVG(property_reviews.rating) AS average_rating
+  FROM property_reviews
+  JOIN properties ON property_reviews.property_id = properties.id
+  JOIN reservations ON property_reviews.property_id = reservations.property_id 
+  WHERE reservations.guest_id = $1
+  AND reservations.end_date < now()::date
+  GROUP BY properties.id, reservations.id
+  ORDER BY reservations.start_date
+  LIMIT $2;`, [guest_id, limit])
+  .then(res => res.rows)
+  .catch((err) => {
+    console.error('query error', err.stack);
+  })
 };
 
 /// Properties
