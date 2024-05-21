@@ -1,0 +1,19 @@
+{
+  "name": "lightbnb",
+  "version": "1.0.0",
+  "description": "Lighthouse Labs M05W12 LightBnB Database Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcm68888/lightbnb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rcm68888/lightbnb/issues"
+  },
+  "homepage": "https://github.com/rcm68888/lightbnb#readme"
+}
